@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Nahrát PDF{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📂 Nahrát PDF</h2>
+
+{% if success %}
+<div class="alert alert-success">Soubor byl úspěšně nahrán!</div>
+{% endif %}
+
+<div class="card p-4">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="file" class="form-label">Vyber PDF soubor</label>
+            <input type="file" name="file" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-scaleup">Nahrát</button>
+    </form>
+</div>
+{% endblock %}

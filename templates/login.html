@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Přihlášení{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">🔑 Přihlášení</h2>
+<div class="card p-4">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-scaleup">Přihlásit se</button>
+    </form>
+</div>
+{% endblock %}

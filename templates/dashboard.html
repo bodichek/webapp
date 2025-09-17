@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📊 Dashboard</h2>
+
+{% if data %}
+<div class="table-responsive">
+    <table class="table table-hover table-bordered align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Uživatel</th>
+                <th>Rok</th>
+                <th>Typ</th>
+                <th>Hodnota</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in data %}
+            <tr>
+                <td>{{ item.user.username }}</td>
+                <td>{{ item.year }}</td>
+                <td>{{ item.file_type }}</td>
+                <td>{{ item.value }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">Žádná data zatím nejsou k dispozici.</div>
+{% endif %}
+{% endblock %}

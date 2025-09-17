@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Údaje o firmě{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card p-4">
+    <h3 class="mb-3">Údaje o firmě</h3>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <h5>🏢 Firma</h5>
+      {{ form.as_p }}
+
+      <hr>
+
+      <h5>📇 Kontaktní osoba</h5>
+      {{ contact_form.as_p }}
+
+      <button type="submit" class="btn btn-scaleup mt-3">💾 Uložit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Moje firma{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card p-4">
+    {% if company %}
+      <h3 class="mb-3">{{ company.name }} (IČO: {{ company.ico }})</h3>
+      <p><strong>Adresa:</strong> {{ company.address }}, {{ company.city }} {{ company.postal_code }}</p>
+      <p><strong>Vytvořeno:</strong> {{ company.created_at|date:"d.m.Y H:i" }}</p>
+
+      <hr>
+
+      <h5>📇 Kontaktní osoba</h5>
+      {% if contacts %}
+        {% for contact in contacts %}
+          <p><strong>Jméno:</strong> {{ contact.name }}</p>
+          <p><strong>Email:</strong> {{ contact.email }}</p>
+          <p><strong>Telefon:</strong> {{ contact.phone }}</p>
+          <hr>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted">Nebyly zadány žádné kontaktní osoby.</p>
+      {% endif %}
+
+      <a href="{% url 'company_create' %}" class="btn btn-scaleup mt-3">✏ Upravit údaje</a>
+    {% else %}
+      <p class="text-muted">Nemáš zatím vyplněné údaje o firmě.</p>
+      <a href="{% url 'company_create' %}" class="btn btn-scaleup">➕ Přidat údaje</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Kontaktní údaje{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">🏢 Kontaktní údaje firmy</h2>
+
+<div class="card p-4">
+    <form method="post">
+        {% csrf_token %}
+
+        <h5>Informace o firmě</h5>
+        <div class="mb-3">
+            <label for="id_ico" class="form-label">IČO</label>
+            {{ form.ico }}
+            <button type="button" class="btn btn-sm btn-scaleup mt-2" onclick="fetchCompany()">Načíst z justice.cz</button>
+        </div>
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Název</label>
+            {{ form.name }}
+        </div>
+        <div class="mb-3">
+            <label for="id_address" class="form-label">Adresa</label>
+            {{ form.address }}
+        </div>
+        <div class="mb-3">
+            <label for="id_city" class="form-label">Město</label>
+            {{ form.city }}
+        </div>
+        <div class="mb-3">
+            <label for="id_postal_code" class="form-label">PSČ</label>
+            {{ form.postal_code }}
+        </div>
+
+        <h5 class="mt-4">Kontaktní osoba</h5>
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Jméno</label>
+            {{ contact_form.name }}
+        </div>
+        <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            {{ contact_form.email }}
+        </div>
+        <div class="mb-3">
+            <label for="id_phone" class="form-label">Telefon</label>
+            {{ contact_form.phone }}
+        </div>
+
+        <button type="submit" class="btn btn-scaleup">Uložit</button>
+    </form>
+</div>
+
+<script>
+function fetchCompany() {
+    const ico = document.getElementById("id_ico").value;
+    if (!ico) {
+        alert("Zadejte IČO!");
+        return;
+    }
+
+    fetch(`/company/fetch/?ico=${ico}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+        document.getElementById("id_name").value = data.name || "";
+        document.getElementById("id_address").value = data.address || "";
+        document.getElementById("id_city").value = data.city || "";
+        document.getElementById("id_postal_code").value = data.postal_code || "";
+    })
+    .catch(err => alert("Nepodařilo se načíst data: " + err));
+
+}
+
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Vítej{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h2 class="mb-4">👋 Vítej v aplikaci FinApp</h2>
+    <p class="lead">Vyber si, kam chceš pokračovat:</p>
+
+    {% if user.is_authenticated %}
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-3">
+            <a href="/dashboard/" class="btn btn-scaleup w-100 mb-3">📊 Dashboard</a>
+        </div>
+        <div class="col-md-3">
+            <a href="/files/upload/" class="btn btn-scaleup w-100 mb-3">📂 Nahrát PDF</a>
+        </div>
+        <div class="col-md-3">
+            <a href="/company/new/" class="btn btn-scaleup w-100 mb-3">🏢 Kontaktní údaje</a>
+        </div>
+        <div class="col-md-3">
+            <a href="/logout/" class="btn btn-outline-danger w-100 mb-3">🚪 Odhlásit se</a>
+        </div>
+    </div>
+    {% else %}
+    <a href="/login/" class="btn btn-scaleup me-2">🔑 Přihlásit se</a>
+    <a href="/register/" class="btn btn-outline-primary">📝 Registrovat</a>
+    {% endif %}
+</div>
+{% endblock %}
