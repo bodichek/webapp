@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}📊 Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">📊 Finanční Dashboard</h2>
+
+  {% if metrics_by_year %}
+    <div class="row mb-5">
+      <div class="col-md-6">
+        <h4>Základní ukazatele</h4>
+        <table class="table table-bordered table-sm">
+          <thead class="table-dark">
+            <tr>
+              <th>Rok</th>
+              <th>Revenue</th>
+              <th>COGS</th>
+              <th>Gross Margin %</th>
+              <th>Operating Profit %</th>
+              <th>Net Profit %</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for year, metrics in metrics_by_year.items %}
+            <tr>
+              <td>{{ year }}</td>
+              <td>{{ metrics.Revenue|floatformat:0 }}</td>
+              <td>{{ metrics.COGS|floatformat:0 }}</td>
+              <td>{{ metrics."Gross Margin %"|floatformat:1 }}</td>
+              <td>{{ metrics."Operating Profit %"|floatformat:1 }}</td>
+              <td>{{ metrics."Net Profit %"|floatformat:1 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-6">
+        <h4>Meziroční růst (%)</h4>
+        <table class="table table-bordered table-sm">
+          <thead class="table-dark">
+            <tr>
+              <th>Rok</th>
+              <th>Revenue Growth %</th>
+              <th>COGS Growth %</th>
+              <th>Overheads Growth %</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for year, g in growth.items %}
+            <tr>
+              <td>{{ year }}</td>
+              <td>{{ g."Revenue Growth %"|default:"-"|floatformat:1 }}</td>
+              <td>{{ g."COGS Growth %"|default:"-"|floatformat:1 }}</td>
+              <td>{{ g."Overheads Growth %"|default:"-"|floatformat:1 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Grafy -->
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <canvas id="revenueChart"></canvas>
+      </div>
+      <div class="col-md-6 mb-4">
+        <canvas id="marginChart"></canvas>
+      </div>
+      <div class="col-md-6 mb-4">
+        <canvas id="profitChart"></canvas>
+      </div>
+      <div class="col-md-6 mb-4">
+        <canvas id="growthChart"></canvas>
+      </div>
+    </div>
+
+  {% else %}
+    <div class="alert alert-info text-center">
+      Žádná data zatím nejsou k dispozici.
+    </div>
+  {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const years = {{ chart_data.years|safe }};
+
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [
+      { label: 'Revenue', data: {{ chart_data.Revenue|safe }}, backgroundColor: 'rgba(54, 162, 235, 0.6)' },
+      { label: 'COGS', data: {{ chart_data.COGS|safe }}, backgroundColor: 'rgba(255, 99, 132, 0.6)' }
+    ]
+  }
+});
+
+new Chart(document.getElementById('marginChart'), {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [
+      { label: 'Gross Margin %', data: {{ chart_data."Gross Margin %"|safe }}, borderColor: 'green', fill: false }
+    ]
+  }
+});
+
+new Chart(document.getElementById('profitChart'), {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [
+      { label: 'Operating Profit %', data: {{ chart_data."Operating Profit %"|safe }}, borderColor: 'blue', fill: false },
+      { label: 'Net Profit %', data: {{ chart_data."Net Profit %"|safe }}, borderColor: 'red', fill: false }
+    ]
+  }
+});
+
+new Chart(document.getElementById('growthChart'), {
+  type: 'bar',
+  data: {
+    labels: {{ growth_data.years|safe }},
+    datasets: [
+      { label: 'Revenue Growth %', data: {{ growth_data."Revenue Growth %"|safe }}, backgroundColor: 'rgba(75, 192, 192, 0.6)' },
+      { label: 'COGS Growth %', data: {{ growth_data."COGS Growth %"|safe }}, backgroundColor: 'rgba(255, 206, 86, 0.6)' },
+      { label: 'Overheads Growth %', data: {{ growth_data."Overheads Growth %"|safe }}, backgroundColor: 'rgba(153, 102, 255, 0.6)' }
+    ]
+  }
+});
+</script>
+{% endblock %}

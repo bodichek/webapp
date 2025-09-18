@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .utils import extract_tables, parse_decimal
-from finance.models import FinancialAnalysis
+from filesapp.models import FinancialAnalysis
 
 def parse_pdf(request):
     if request.method == "POST" and request.FILES.get("pdf_file"):

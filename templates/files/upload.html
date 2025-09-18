@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Nahrát PDF{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">📂 Nahrát soubory</h2>
+  <form method="post" enctype="multipart/form-data" id="uploadForm">
+    {% csrf_token %}
+
+    <!-- Rozvaha -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">První oddíl – ROZVAHA</div>
+      <div class="card-body">
+        {% for year in years %}
+          <div class="mb-3">
+            <label class="form-label">{{ year }}</label>
+            <input type="file" name="rozvaha_{{ year }}" class="form-control"
+                   {% if rozvaha.year %}data-exists="true"{% endif %}>
+            {% if rozvaha.year %}
+              <small class="text-success">
+                ✅ Soubor již nahrán: {{ rozvaha.year.file.name }}
+              </small>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Výsledovka -->
+    <div class="card mb-4">
+      <div class="card-header bg-success text-white">Druhý oddíl – VÝSLEDOVKA</div>
+      <div class="card-body">
+        {% for year in years %}
+          <div class="mb-3">
+            <label class="form-label">{{ year }}</label>
+            <input type="file" name="vysledovka_{{ year }}" class="form-control"
+                   {% if vysledovka.year %}data-exists="true"{% endif %}>
+            {% if vysledovka.year %}
+              <small class="text-success">
+                ✅ Soubor již nahrán: {{ vysledovka.year.file.name }}
+              </small>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-scaleup">💾 Uložit soubory</button>
+  </form>
+</div>
+
+<!-- Toasty -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  {% for message in messages %}
+    <div class="toast align-items-center text-bg-{{ message.tags }} border-0 show" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">{{ message }}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+document.getElementById("uploadForm").addEventListener("submit", function(event) {
+  const inputs = document.querySelectorAll("input[type='file'][data-exists='true']");
+  for (let input of inputs) {
+    if (input.files.length > 0) {
+      const confirmOverwrite = confirm(
+        "Soubor pro " + input.name + " již existuje. Chcete ho opravdu přepsat?"
+      );
+      if (!confirmOverwrite) {
+        event.preventDefault();
+        return false;
+      }
+    }
+  }
+});
+</script>
+{% endblock %}

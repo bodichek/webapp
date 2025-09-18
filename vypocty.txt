@@ -1,0 +1,169 @@
+
+Revenue Growth vs. Cost of Goods Growth
+Revenue Growth vs. Overheads Growth
+Profitability Trends (marginy, operating profit, čistý zisk)
+Profit vs. Cash Flow
+
+
+Export: možnost stáhnout report jako PDF.
+
+
+Datové zdroje:
+
+Input: PDF (naskenované či digitální) – výkazy min. za 2–4 roky.
+Processing: Google Document AI + AI parsing (např. GPT).
+
+
+Scénář použití (UX flow):
+
+Uživatel nahraje dokumenty (PDF výsledovka + rozvaha).
+Systém provede OCR, extrahuje čísla a přiřadí je k jednotlivým ukazatelům.
+Aplikace propočítá marže a ukazatele.
+Výsledky se zobrazí ve vizualizovaném dashboardu s možností exportu do PDF
+0) Mapování vstupů z OCR (CZ → EN metriky v appce)
+
+
+Tržby (Revenue) = součet „Tržby za prodej vlastních výrobků a služeb“ (ř. 01) + „Tržby z prodeje zboží“ (ř. 02).
+Náklady na prodané zboží/výkony (Cost of Goods / COGS) = „Náklady na prodané zboží“ (ř. 04) + „Výkonová spotřeba“ (ř. 05, tj. spotřeba materiálu a energie + služby).
+Režie (Overheads) = provozní náklady mimo COGS: „Osobní náklady“ (ř. 12–13), „Daně a poplatky“ (ř. 16), „Odpisy dlouhodobého majetku“ (ř. 17), „Ostatní provozní náklady“ (ř. 18).
+Ostatní provozní výnosy (ř. 15) – volitelně zahrnout (viz poznámky níž).
+Finanční výnosy/náklady (ř. 20/21), Daň z příjmů (ř. 40) – pro čistý zisk.
+Mimořádné položky – typicky nulové; pokud existují, evidovat zvlášť (řádky za provozem/finanční částí).
+1.6 Operating Profit (EBIT / Provozní výsledek hospodaření)
+Dvě bezpečné varianty podle toho, zda chceš počítat z „bloků“ nebo přímo z řádků:
+
+Varianta A (z bloků, doporučeno pro dashboard z PDF):
+Operating Profit = Gross Margin − Overheads
+(tj. EBIT bez započtení ř. 15; toto odpovídá „Your Profit Story“: Gross Margin → Overheads → Operating Profit .)
+Varianta B (z řádků výkazu):
+EBIT = (Revenue + ř. 15) − (ř. 04 + ř. 05 + ř. 12 + ř. 13 + ř. 16 + ř. 17 + ř. 18)
+
+
+1.7 Net Profit (Čistý zisk / Výsledek hospodaření za účetní období)
+
+Krok 1: EBT = EBIT + (ř. 20 − ř. 21)
+
+
+ř. 20: Finanční výnosy
+ř. 21: Finanční náklady
+
+
+Krok 2: Net Profit = EBT − ř. 40 ± mimořádné položky (pokud existují)
+
+
+ř. 40: Daň z příjmů
+Spodní „Výsledek hospodaření za účetní období“ (celkový bottom line) odpovídá Net Profit v reportu.
+
+
+
+
+
+
+2) Meziroční ukazatele a grafy (pro část „Profitability Trends“ a „Revenue Growth vs …“)
+
+
+Revenue Growth %_Y = (Revenue_Y − Revenue_{Y−1}) / Revenue_{Y−1} × 100
+COGS Growth %_Y = (COGS_Y − COGS_{Y−1}) / COGS_{Y−1} × 100
+Overheads Growth %_Y = (Overheads_Y − Overheads_{Y−1}) / Overheads_{Y−1} × 100
+Operating Profit %_Y = (Operating Profit_Y / Revenue_Y) × 100
+Net Profit %_Y = (Net Profit_Y / Revenue_Y) × 100
+1) Základní metriky a vzorce (výsledovka)
+
+
+1.1 Revenue (Tržby)
+
+Revenue = ř. 01 + ř. 02
+
+
+ř. 01: Tržby za prodej vlastních výrobků a služeb
+ř. 02: Tržby z prodeje zboží
+
+
+
+
+1.2 Cost of Goods (COGS)
+
+COGS = ř. 04 + ř. 05
+
+
+ř. 04: Náklady na prodané zboží
+ř. 05: Výkonová spotřeba (Spotřeba materiálu a energie + Služby)
+
+
+
+
+1.3 Gross Margin (Hrubá marže, částka)
+
+Gross Margin = Revenue − COGS
+
+
+1.4 Gross Margin % (Hrubá marže v %)
+
+Gross Margin % = (Gross Margin / Revenue) × 100
+
+
+1.5 Overheads (Režie, OPEX bez COGS)
+
+Overheads = (ř. 12 + ř. 13) + ř. 16 + ř. 17 + ř. 18 − případné provozní výnosy účelově započítané proti nákladům*
+
+
+ř. 12: Mzdové náklady (Osobní náklady – mzdové)
+ř. 13: Sociální a zdravotní (Osobní náklady – zákonné pojištění apod.)
+ř. 16: Daně a poplatky
+ř. 17: Odpisy dlouhodobého nehmotného a hmotného majetku
+ř. 18: Ostatní provozní náklady
+Pozn.: Ve „manažerské“ definici se Ostatní provozní výnosy (ř. 15) obvykle neodečítají v Overheads, ale patří až do EBIT.
+3.1 Cash from Customers (Příjmy od zákazníků)
+
+Indikativně (pokud není přímo cash flow výkaz):
+Cash from Customers ≈ Tržby (Revenue) ± Δ(Ostatní provozní výnosy fakturační) − Δ(Pohledávky z obchodního styku)
+
+
+Δ(Pohledávky) = Pohledávky_t−Pohledávky_{t−1} (z rozvahy)
+
+
+
+
+3.2 Cash to Suppliers (Platby dodavatelům)
+
+Indikativně:
+Cash to Suppliers ≈ COGS ± část služeb v ř. 05 ± Δ(Zásoby) + Δ(Závazky vůči dodavatelům)
+
+
+Zásoby a Závazky z rozvahy; znaménka volte podle směru cash efektu (vyšší zásoby = cash out; vyšší závazky = cash in).
+
+
+
+
+3.3 Gross Cash Profit
+
+Gross Cash Profit = Cash from Customers − Cash to Suppliers
+(Ve vzoru odpovídá položce „Gross Cash Profit“ pod párem Revenue/COGS .)
+
+
+3.4 Operating Cash Flow (OCF, nepřímá metoda)
+
+OCF = Net Profit + Odpisy (ř. 17) ± ΔPracovního kapitálu
+
+
+ΔPracovní kapitál = Δ(Zásoby) + Δ(Pohledávky) − Δ(Krátkodobé závazky z provozu)
+Můžeš přidat další nepeněžní úpravy (rezervy, opravné položky), pokud jsou dostupné.
+
+
+
+
+3.5 Net Cash Flow (čistá změna peněz)
+
+Net Cash Flow = OCF + CFI + CFF
+
+
+CFI (investiční) – např. „Pořízení DM“ (v rozvaze a příloze; ve vzoru „Fixed Assets Acquired“)
+CFF (finanční) – změny úvěrů, dividendy (ve vzoru „Distributions/Dividends Paid“, „Capital Withdrawn“)
+
+
+
+
+Pro dashboard drž párování tabulky z ukázky: vlevo „Profit“ (Revenue, COGS, Gross Margin, Overheads excl. D&A, Operating Profit, Retained Profit), vpravo paralelně „Cash Flow“ (Cash from Customers, Cash to Suppliers, Gross Cash Profit, Operating Cash Flow, Net Cash Flow) .
+
+
+81100109811512

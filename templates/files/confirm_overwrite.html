@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h3>⚠️ Soubor již existuje</h3>
+  <p>
+    Pro rok <b>{{ year }}</b> a typ <b>{{ file_type|upper }}</b> již existuje soubor.
+    <br>
+    Chceš ho přepsat?
+  </p>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="confirm_overwrite" value="1">
+    <input type="hidden" name="file_type" value="{{ file_type }}">
+    <input type="hidden" name="year" value="{{ year }}">
+    <input type="file" name="file" required>
+
+    <button type="submit" class="btn btn-danger">Ano, přepsat</button>
+    <a href="{% url 'upload_files' %}" class="btn btn-secondary">Ne, zrušit</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Moje soubory{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">📑 Moje nahrané soubory</h2>
+  {% if files %}
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Rok</th>
+          <th>Typ</th>
+          <th>Soubor</th>
+          <th>Nahráno</th>
+          <th>Akce</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for f in files %}
+        <tr>
+          <td>{{ f.year }}</td>
+          <td>{{ f.get_file_type_display }}</td>
+          <td><a href="{{ f.file.url }}" target="_blank">📂 {{ f.file.name }}</a></td>
+          <td>{{ f.uploaded_at|date:"d.m.Y H:i" }}</td>
+          <td>
+            <form method="post" action="{% url 'file_delete' f.pk %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-danger"
+                      onclick="return confirm('Opravdu chceš smazat tento soubor?');">
+                🗑️ Smazat
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-muted">Zatím jsi nenahrál žádné soubory.</p>
+  {% endif %}
+</div>
+
+<!-- Toasty -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  {% for message in messages %}
+    <div class="toast align-items-center text-bg-{{ message.tags }} border-0 show" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">{{ message }}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

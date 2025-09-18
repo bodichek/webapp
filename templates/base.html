@@ -45,7 +45,9 @@
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="/dashboard/">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="/files/upload/">Nahrát PDF</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'upload_files' %}">Nahrát PDF</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'file_list' %}">📑 Moje soubory</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'show_data' %}">📊 Zobrazit data</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'company_detail' %}">Kontaktní údaje</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'company_list' %}">Seznam firem</a></li>
                 <li class="nav-item">

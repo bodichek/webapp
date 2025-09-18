@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}📑 Načtená data{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">📑 Načtená data z CSV / FinancialRow</h2>
+
+  {% for table in tables %}
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header bg-dark text-white">
+        {{ table.title }}
+      </div>
+      <div class="card-body">
+        {% if table.error %}
+          <div class="alert alert-warning">{{ table.error }}</div>
+        {% else %}
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered">
+              <thead class="table-light">
+                <tr>
+                  {% for h in table.headers %}
+                    <th>{{ h }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in table.rows %}
+                  <tr>
+                    {% for col in row %}
+                      <td>{{ col }}</td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <div class="alert alert-info text-center">
+      Zatím nejsou k dispozici žádná data.
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

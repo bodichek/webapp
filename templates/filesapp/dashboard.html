@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}📊 Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="mb-4">📊 Dashboard – {{ request.user.username }}</h2>
+
+  <!-- Tabulka základních metrik -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Rok</th>
+        <th>Revenue</th>
+        <th>COGS</th>
+        <th>Gross Margin</th>
+        <th>Overheads</th>
+        <th>Operating Profit</th>
+        <th>Net Profit</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for year, m in metrics_by_year.items %}
+      <tr>
+        <td>{{ year }}</td>
+        <td>{{ m.Revenue|floatformat:0 }}</td>
+        <td>{{ m.COGS|floatformat:0 }}</td>
+        <td>{{ m.Gross_Margin|floatformat:0 }} ({{ m.Gross_Margin_pct|floatformat:1 }}%)</td>
+        <td>{{ m.Overheads|floatformat:0 }}</td>
+        <td>{{ m.Operating_Profit|floatformat:0 }} ({{ m.Operating_Profit_pct|floatformat:1 }}%)</td>
+        <td>{{ m.Net_Profit|floatformat:0 }} ({{ m.Net_Profit_pct|floatformat:1 }}%)</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Grafy -->
+  <h3>📈 Revenue vs COGS</h3>
+  <canvas id="mainChart" height="100"></canvas>
+
+  <h3>📉 Profitability Trends</h3>
+  <canvas id="profitabilityChart" height="100"></canvas>
+
+  <h3>📊 Revenue Growth vs Cost of Goods Growth</h3>
+  <canvas id="growthChart" height="100"></canvas>
+
+  <h3>📊 Revenue Growth vs Overheads Growth</h3>
+  <canvas id="overheadsChart" height="100"></canvas>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const chartData = {{ chart_data|safe }};
+const growthData = {{ growth_data|safe }};
+
+// Revenue vs COGS
+new Chart(document.getElementById('mainChart'), {
+    type: 'bar',
+    data: {
+        labels: chartData.years,
+        datasets: [
+            { label: 'Revenue', data: chartData.Revenue, backgroundColor: 'rgba(54,162,235,0.7)' },
+            { label: 'COGS', data: chartData.COGS, backgroundColor: 'rgba(255,99,132,0.7)' }
+        ]
+    }
+});
+
+// Profitability Trends
+new Chart(document.getElementById('profitabilityChart'), {
+    type: 'line',
+    data: {
+        labels: chartData.years,
+        datasets: [
+            { label: 'Gross Margin %', data: chartData["Gross Margin %"], borderColor: 'blue', fill: false },
+            { label: 'Operating Profit %', data: chartData["Operating Profit %"], borderColor: 'green', fill: false },
+            { label: 'Net Profit %', data: chartData["Net Profit %"], borderColor: 'red', fill: false }
+        ]
+    }
+});
+
+// Revenue Growth vs COGS Growth
+new Chart(document.getElementById('growthChart'), {
+    type: 'bar',
+    data: {
+        labels: growthData.years,
+        datasets: [
+            { label: 'Revenue Growth %', data: growthData["Revenue Growth %"], backgroundColor: 'orange' },
+            { label: 'COGS Growth %', data: growthData["COGS Growth %"], backgroundColor: 'purple' }
+        ]
+    }
+});
+
+// Revenue Growth vs Overheads Growth
+new Chart(document.getElementById('overheadsChart'), {
+    type: 'bar',
+    data: {
+        labels: growthData.years,
+        datasets: [
+            { label: 'Revenue Growth %', data: growthData["Revenue Growth %"], backgroundColor: 'orange' },
+            { label: 'Overheads Growth %', data: growthData["Overheads Growth %"], backgroundColor: 'teal' }
+        ]
+    }
+});
+</script>
+{% endblock %}
+
